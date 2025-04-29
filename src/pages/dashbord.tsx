@@ -31,6 +31,11 @@ const Dashboard = () => {
               </div>
 
               {/* Bouton */}
+              <Link to="/homeMembre/detailsClub">
+            <button className="bg-purple-600 text-white text-xs px-4 py-2 rounded-full font-bold hover:bg-blue-700 transition">
+              📄 Details
+            </button>
+          </Link>
               <Link to={'/join'}>
               <button  className="bg-red-600 text-white text-xs px-4 py-2 rounded-full font-bold flex items-center gap-1 hover:bg-red-700 transition">
                 <span>&#10132;</span> JOIN NOW
@@ -63,9 +68,17 @@ const Dashboard = () => {
               </div>
 
               {/* Bouton */}
-              <button className="bg-red-600 text-white text-xs px-4 py-2 rounded-full font-bold flex items-center gap-1 hover:bg-red-700 transition">
+              <Link to="/detail-club">
+            <button className="bg-purple-600 text-white text-xs px-4 py-2 rounded-full font-bold hover:bg-blue-700 transition">
+              📄 Details
+            </button>
+          </Link>
+              <Link to={'/join'}>
+              <button  className="bg-red-600 text-white text-xs px-4 py-2 rounded-full font-bold flex items-center gap-1 hover:bg-red-700 transition">
                 <span>&#10132;</span> JOIN NOW
               </button>
+              </Link>
+
             </div>
 
           </div>
@@ -93,9 +106,17 @@ const Dashboard = () => {
               </div>
 
               {/* Bouton */}
-              <button className="bg-red-600 text-white text-xs px-4 py-2 rounded-full font-bold flex items-center gap-1 hover:bg-red-700 transition">
+              <Link to="/detail-club">
+            <button className="bg-purple-600 text-white text-xs px-4 py-2 rounded-full font-bold hover:bg-blue-700 transition">
+              📄 Details
+            </button>
+          </Link>
+              <Link to={'/join'}>
+              <button  className="bg-red-600 text-white text-xs px-4 py-2 rounded-full font-bold flex items-center gap-1 hover:bg-red-700 transition">
                 <span>&#10132;</span> JOIN NOW
               </button>
+              </Link>
+
             </div>
 
           </div>
@@ -123,9 +144,17 @@ const Dashboard = () => {
               </div>
 
               {/* Bouton */}
-              <button className="bg-red-600 text-white text-xs px-4 py-2 rounded-full font-bold flex items-center gap-1 hover:bg-red-700 transition">
+              <Link to="/detail-club">
+            <button className="bg-purple-600 text-white text-xs px-4 py-2 rounded-full font-bold hover:bg-blue-700 transition">
+              📄 Details
+            </button>
+          </Link>
+              <Link to={'/join'}>
+              <button  className="bg-red-600 text-white text-xs px-4 py-2 rounded-full font-bold flex items-center gap-1 hover:bg-red-700 transition">
                 <span>&#10132;</span> JOIN NOW
               </button>
+              </Link>
+
             </div>
 
           </div>
@@ -153,9 +182,17 @@ const Dashboard = () => {
               </div>
 
               {/* Bouton */}
-              <button className="bg-red-600 text-white text-xs px-4 py-2 rounded-full font-bold flex items-center gap-1 hover:bg-red-700 transition">
+              <Link to="/detail-club">
+            <button className="bg-purple-600 text-white text-xs px-4 py-2 rounded-full font-bold hover:bg-blue-700 transition">
+              📄 Details
+            </button>
+          </Link>
+              <Link to={'/join'}>
+              <button  className="bg-red-600 text-white text-xs px-4 py-2 rounded-full font-bold flex items-center gap-1 hover:bg-red-700 transition">
                 <span>&#10132;</span> JOIN NOW
               </button>
+              </Link>
+
             </div>
 
           </div>

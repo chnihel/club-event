@@ -2,19 +2,22 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 interface HeaderProps {
-  dark: boolean;
-  isSideMenuOpen: boolean;
-  toggleSideMenu: () => void;
-  toggleTheme: () => void;
-  isNotificationsMenuOpen: boolean;
-  toggleNotificationsMenu: () => void;
-  closeNotificationsMenu: () => void;
-  isProfileMenuOpen: boolean;
-  toggleProfileMenu: () => void;
-  closeProfileMenu: () => void;
+  dark?: boolean;
+  isSideMenuOpen?: boolean;
+  toggleSideMenu?: () => void;
+  toggleTheme?: () => void;
+  isNotificationsMenuOpen?: boolean;
+  toggleNotificationsMenu?: () => void;
+  closeNotificationsMenu?: () => void;
+  isProfileMenuOpen?: boolean;
+  toggleProfileMenu?: () => void;
+  closeProfileMenu?: () => void;
+  onSearch?: (value: string) => void;
+
 }
 
-const Header = ({
+
+const HeaderDerigeant = ({
   dark,
   isSideMenuOpen,
   toggleSideMenu,
@@ -25,12 +28,19 @@ const Header = ({
   isProfileMenuOpen,
   toggleProfileMenu,
   closeProfileMenu,
-}: HeaderProps) => {
+  onSearch,
+
+  
+}: HeaderProps ) => {
   const navigate=useNavigate()
-  const logOut=()=>{
-    localStorage.removeItem('userClub')
-    navigate('/')
-  }
+    const logOut=()=>{
+      localStorage.removeItem('userClub')
+      navigate('/')
+    }
+    const localStorageData = localStorage.getItem('userClub')
+    ? JSON.parse(localStorage.getItem('userClub') as string)
+    : null;
+  const profileDerigeant=localStorageData ? localStorageData.user?.image : null
   return (
     <header className="z-10 py-4 bg-white shadow-md dark:bg-gray-800">
       <div className="container flex items-center justify-between h-full px-6 mx-auto text-purple-600 dark:text-purple-300">
@@ -75,6 +85,7 @@ const Header = ({
               type="text"
               placeholder="Search for projects"
               aria-label="Search"
+              onChange={(e) => onSearch?.(e.target.value)}
             />
           </div>
         </div>
@@ -118,7 +129,11 @@ const Header = ({
             <button
               className="relative align-middle rounded-md focus:outline-none focus:shadow-outline-purple"
               onClick={toggleNotificationsMenu}
-              onKeyDown={(e) => e.key === 'Escape' && closeNotificationsMenu()}
+              onKeyDown={(e) => {
+                if (e.key === 'Escape' && closeNotificationsMenu) {
+                  closeNotificationsMenu();
+                }
+              }}
               aria-label="Notifications"
               aria-haspopup="true"
             >
@@ -141,13 +156,17 @@ const Header = ({
             {isNotificationsMenuOpen && (
               <ul
                 onClick={(e) => e.stopPropagation()}
-                onKeyDown={(e) => e.key === 'Escape' && closeNotificationsMenu()}
+                onKeyDown={(e) => {
+                  if (e.key === 'Escape' && closeNotificationsMenu) {
+                    closeNotificationsMenu();
+                  }
+                }}
                 className="absolute right-0 w-56 p-2 mt-2 space-y-2 text-gray-600 bg-white border border-gray-100 rounded-md shadow-md dark:text-gray-300 dark:border-gray-700 dark:bg-gray-700"
               >
                 <li className="flex">
                   <Link
                     className="inline-flex items-center justify-between w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-200"
-                    to="/homeMembre/notif"
+                    to="/homeDerigeant/notif"
                   >
                     <span>Messages</span>
                     <span
@@ -166,13 +185,17 @@ const Header = ({
             <button
               className="align-middle rounded-full focus:shadow-outline-purple focus:outline-none"
               onClick={toggleProfileMenu}
-              onKeyDown={(e) => e.key === 'Escape' && closeProfileMenu()}
+              onKeyDown={(e) => {
+                if (e.key === 'Escape' && closeNotificationsMenu) {
+                  closeNotificationsMenu();
+                }
+              }}
               aria-label="Account"
               aria-haspopup="true"
             >
               <img
                 className="object-cover w-8 h-8 rounded-full"
-                src="https://images.unsplash.com/photo-1502378735452-bc7d86632805?ixlib=rb-0.3.5&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=200&fit=max&s=aa3a807e1bbdfd4364d1f449eaa96d82"
+                src={`http://localhost:5000/file/${profileDerigeant}`}
                 alt=""
                 aria-hidden="true"
               />
@@ -180,14 +203,18 @@ const Header = ({
             {isProfileMenuOpen && (
               <ul
                 onClick={(e) => e.stopPropagation()}
-                onKeyDown={(e) => e.key === 'Escape' && closeProfileMenu()}
+                onKeyDown={(e) => {
+                  if (e.key === 'Escape' && closeNotificationsMenu) {
+                    closeNotificationsMenu();
+                  }
+                }}
                 className="absolute right-0 w-56 p-2 mt-2 space-y-2 text-gray-600 bg-white border border-gray-100 rounded-md shadow-md dark:border-gray-700 dark:text-gray-300 dark:bg-gray-700"
                 aria-label="submenu"
               >
                 <li className="flex">
                   <Link
                     className="inline-flex items-center w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-200"
-                    to="/homeMembre/profile"
+                    to="/homeDerigeant/profile"
                   >
                     <svg
                       className="w-4 h-4 mr-3"
@@ -206,31 +233,12 @@ const Header = ({
                     <span>Profile</span>
                   </Link>
                 </li>
-                <li className="flex">
-                  <Link
-                    className="inline-flex items-center w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-200"
-                    to="/homeMembre/listClub"
-                  >
-                    <svg
-                      className="w-4 h-4 mr-3"
-                      aria-hidden="true"
-                      fill="none"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path d="M4 6h16M4 12h16M4 18h16" />
-                    </svg>
-                    <span>Club Suivi</span>
-                  </Link>
-                </li>
+              
 
                 <li className="flex">
                   <Link
                     className="inline-flex items-center w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-200"
-                    to="/homeMembre/newpassword"
+                    to="/homeDerigeant/newpassword"
                   >
                     <svg
                       className="w-4 h-4 mr-3"
@@ -250,10 +258,11 @@ const Header = ({
                     <span>changer mot de passe</span>
                   </Link>
                 </li>
+             
                 <li className="flex">
                   <a
+                  onClick={()=>logOut()}
                     className="inline-flex items-center w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-200"
-                    onClick={()=>logOut()}
                   >
                     <svg
                       className="w-4 h-4 mr-3"
@@ -281,4 +290,4 @@ const Header = ({
   );
 };
 
-export default Header;
+export default HeaderDerigeant;

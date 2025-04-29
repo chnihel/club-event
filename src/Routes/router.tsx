@@ -10,60 +10,138 @@ import Forum from "../views/home/forum";
 import Notifications from "../views/home/notification";
 import Ressources from "../views/home/resource";
 import JoinNow from "../views/home/joinNow";
+import HomePage from "../pages/accueil";
+import HomeDerigeant from "../views/homeDerigeant/homeDerigeantForClub";
+import DashbordDerigeant from "../pages/dashbordDerigeant";
+import ClubDetails from "../component/pageClub";
+import DetailsClubPage from "../pages/DetailsClubPage";
+import Login from "../views/login/login";
+import RegisterMembre from "../views/register/registerMembre";
+import RegisterDerigeant from "../views/register/registerDerigeant";
+import Forget from "../views/resetPassword/forget";
+import Reset from "../views/resetPassword/reset";
+import PrivateRoute from "../component/privateRoute";
+import ListClubsDirigeant from "../views/homeDerigeant/listClubCreer";
+import HomeClubs from "../views/homeDerigeant/homeClubs";
+import AddEvent from "../views/homeDerigeant/addEvent";
+import EventContainer from "../views/homeDerigeant/EventContainer";
 
 const router = createBrowserRouter([
+  {
+     path:'/',
+     element:<HomePage/>
+  },
     {
-      path: '/',
-      element: <Home />,
+      path: '/homeMembre',
+      element:<PrivateRoute><Home /></PrivateRoute> ,
       children: [
         { 
-          path: '/',
+          index:true,
           element: <Dashbord />,
         },
         { 
-            path: '/profile',
+            path: 'profile',
             element: <Profile />,
           },
           { 
-            path: '/newpassword',
+            path: 'newpassword',
             element: <ChangerPassword />,
           },
           { 
-            path: '/listClub',
+            path: 'listClub',
             element: <ListeClubSuivi />,
           },
           {
              
-            path: '/inbox',
+            path: 'inbox',
             element: <Inbox />,
           },
           {
              
-            path: '/calendrier',
+            path: 'calendrier',
             element: <Calendrier />,
           },
           {
              
-            path: '/forum',
+            path: 'forum',
             element: <Forum />,
           },
           {
              
-            path: '/notif',
+            path: 'notif',
             element: <Notifications />,
           },
           {
              
-            path: '/resource',
+            path: 'resource',
             element: <Ressources />,
           },
           {
              
-            path: '/join',
+            path: 'join',
             element: <JoinNow />,
           },
+          { 
+            path:'detailsClub',
+            element: <DetailsClubPage />,
+          },
       ],
+    },
+    {
+      path: '/homeDerigeant',
+      element:<PrivateRoute><HomeClubs /></PrivateRoute> ,
+      children: [
+        { 
+          index:true,
+          element: <ListClubsDirigeant />,
+        },
+        { 
+          path: 'profile',
+          element: <Profile />,
+        },
+        { 
+          path: 'newpassword',
+          element: <ChangerPassword />,
+        },
+       
+       
+      ],
+    },
+    {
+      path: '/homeDerigeant/:clubId',
+      element: <PrivateRoute><HomeDerigeant /></PrivateRoute>,
+      children: [
+        {
+          index: true,
+          element: <DashbordDerigeant />,
+        },
+        {
+          path: "event",
+          element: <EventContainer />,
+        },
+      ],
+    },
+    {
+      path: '/login',
+      element: <Login />,
+    },
+    {
+      path: '/registerMembre',
+      element: <RegisterMembre />,
+    },
+    {
+      path: '/registerDerigeant',
+      element: <RegisterDerigeant />,
+    },
+    {
+      path: '/forget',
+      element: <Forget />,
+    },
+    {
+      path: '/reset',
+      element: <Reset />,
     }
+
   ]);
   
   export default router;
