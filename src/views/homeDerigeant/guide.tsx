@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import api from "../../service/api";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import type { JSX } from "react";
 import Swal from "sweetalert2";
+import { NotificationContext } from "../../component/NotificationProvider";
 
 
 
@@ -20,6 +21,39 @@ interface Ressource {
 const FaTrashIcon = FaTrash as unknown as () => JSX.Element;
 const FaEditIcon = FaEdit as unknown as () => JSX.Element;
 const Guide = () => {
+    const notificationContext = useContext(NotificationContext);
+    console.log('notificationContext',notificationContext)
+    const fcmToken = notificationContext?.fcmToken;
+
+useEffect(() => {
+    if (fcmToken) {
+      console.log("FCM Token disponible :", fcmToken);
+    }
+  }, [fcmToken]);
+const sendNotification = async (title: string, body: string) => {
+    if (fcmToken) {
+      try {
+        const response = await fetch('http://localhost:5000/notification', {
+          method: 'POST',
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            title,
+            body,
+            deviceIds: [fcmToken],
+          }),
+        });
+  
+        const result = await response.json();
+        console.log("Notification envoyée :", result);
+      } catch (error) {
+        console.error("Erreur lors de l'envoi de la notification", error);
+      }
+    } else {
+      console.log('Aucun token FCM disponible');
+    }
+  };
     const [guides, setGuide] = useState<Ressource[]>([])
     const { clubId } = useParams()
     const getAllGuideRessource = async () => {
@@ -53,6 +87,10 @@ const Guide = () => {
 
             const response = await api.addGuide(dataGuide);
             console.log('guide added by club manager:', response.data);
+            await sendNotification(
+                "📘 Nouveau guide ajouté !",
+                `Le club vient de publier un nouveau guide : ${dataGuide.titre}`
+            );
             getAllGuideRessource();
             setShowModal(false);
         } catch (error) {

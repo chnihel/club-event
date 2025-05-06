@@ -2,6 +2,7 @@ import { useState } from 'react';
 import Header from '../../component/header';
 import Sidebar from '../../component/sidebar';
 import { Outlet } from 'react-router-dom';
+import NotificationProvider from '../../component/NotificationProvider';
 
 const Home = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -37,8 +38,9 @@ const Home = () => {
   };
 
   return (
+ 
     <div className={`flex h-screen bg-gray-50 dark:bg-gray-900 ${isSideMenuOpen ? 'overflow-hidden' : ''}`}>
-
+     
       <Sidebar isSideMenuOpen={isSideMenuOpen} dark={dark} />
 
       {isMobileMenuOpen && (
@@ -66,7 +68,9 @@ const Home = () => {
           <Outlet />
         </main>
       </div>
+    
     </div>
+
 
   );
 };

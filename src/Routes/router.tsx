@@ -40,6 +40,7 @@ import GuideMembre from "../views/home/guideMembre";
 import ReglementMembre from "../views/home/reglementMembre";
 import MultimediaMembre from "../views/home/multimediaMembre";
 import TutorielMembre from "../views/home/tutorielMembre";
+import NotificationProvider from "../component/NotificationProvider";
 
 const router = createBrowserRouter([
   {
@@ -66,7 +67,9 @@ const router = createBrowserRouter([
   },
     {
       path: '/homeMembre',
-      element:<PrivateRoute><Home /></PrivateRoute> ,
+      element:<PrivateRoute> <NotificationProvider>
+      <Home />
+    </NotificationProvider></PrivateRoute> ,
       children: [
         { 
           index:true,
