@@ -72,6 +72,50 @@ console.log('id de club', clubId);
           <li className="relative px-6 py-3">
             <Link
               className="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
+              to={`/homeDerigeant/${clubId}/membreSuivi`}
+            >
+              <svg
+                className="w-5 h-5"
+                aria-hidden="true"
+                fill="none"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"
+                ></path>
+              </svg>
+              <span className="ml-4">MemberFollowing</span>
+            </Link>
+          </li>
+          <li className="relative px-6 py-3">
+            <Link
+              className="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
+              to={`/homeDerigeant/${clubId}/membreBureau`}
+            >
+              <svg
+                className="w-5 h-5"
+                aria-hidden="true"
+                fill="none"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"
+                ></path>
+              </svg>
+              <span className="ml-4">AddMembreBureau</span>
+            </Link>
+          </li>
+          <li className="relative px-6 py-3">
+            <Link
+              className="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
               to="/homeMembre/inbox"
             >
               <svg
@@ -94,7 +138,7 @@ console.log('id de club', clubId);
           <li className="relative px-6 py-3">
             <Link
               className="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-              to="/homeMembre/resource"
+              to={`/homeDerigeant/${clubId}/ressource`} 
             >
               <svg
                 className="w-5 h-5"
@@ -113,26 +157,7 @@ console.log('id de club', clubId);
               <span className="ml-4">Ressources</span>
             </Link>
           </li>
-          <li className="relative px-6 py-3">
-            <Link
-              className="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-              to="/homeMembre/calendrier"
-            >
-              <svg
-                className="w-5 h-5"
-                aria-hidden="true"
-                fill="none"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path d="M8 7V3m8 4V3M4 11h16M5 5h14a2 2 0 012 2v12a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2z" />
-              </svg>
-              <span className="ml-4">Calendrier</span>
-            </Link>
-          </li>
+         
           <li className="relative px-6 py-3">
             <Link
               className="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"

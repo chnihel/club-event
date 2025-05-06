@@ -13,7 +13,6 @@ import JoinNow from "../views/home/joinNow";
 import HomePage from "../pages/accueil";
 import HomeDerigeant from "../views/homeDerigeant/homeDerigeantForClub";
 import DashbordDerigeant from "../pages/dashbordDerigeant";
-import ClubDetails from "../component/pageClub";
 import DetailsClubPage from "../pages/DetailsClubPage";
 import Login from "../views/login/login";
 import RegisterMembre from "../views/register/registerMembre";
@@ -23,13 +22,47 @@ import Reset from "../views/resetPassword/reset";
 import PrivateRoute from "../component/privateRoute";
 import ListClubsDirigeant from "../views/homeDerigeant/listClubCreer";
 import HomeClubs from "../views/homeDerigeant/homeClubs";
-import AddEvent from "../views/homeDerigeant/addEvent";
 import EventContainer from "../views/homeDerigeant/EventContainer";
+import MembreSuivi from "../views/homeDerigeant/membreSuivi";
+import MembreBureau from "../views/homeDerigeant/membreBureau";
+import HomeAdmin from "../views/homeAdmin/homeAdmin";
+import ListClubs from "../views/homeAdmin/ListClubs";
+import StripePaiementPage from "../component/paiement";
+import StripePaiementPageClub from "../component/paiementClub";
+import ListMembreEvent from "../views/homeDerigeant/listMembreEvent";
+import ClubResources from "../views/homeDerigeant/ressourceDerigeant";
+import Guide from "../views/homeDerigeant/guide";
+import Reglement from "../views/homeDerigeant/reglement";
+import Multimedia from "../views/homeDerigeant/multimedia";
+import Tutoriel from "../views/homeDerigeant/tuotriel";
+import ClubSuivi from "../views/home/clubSuivi";
+import GuideMembre from "../views/home/guideMembre";
+import ReglementMembre from "../views/home/reglementMembre";
+import MultimediaMembre from "../views/home/multimediaMembre";
+import TutorielMembre from "../views/home/tutorielMembre";
 
 const router = createBrowserRouter([
   {
      path:'/',
      element:<HomePage/>
+  },
+  {
+    path: '/homeAdmin',
+    element:<PrivateRoute><HomeAdmin /></PrivateRoute> ,
+    children:[
+      { 
+        index:true,
+        element: <ListClubs />,
+      },
+      { 
+        path: 'profile',
+        element: <Profile />,
+      },
+      { 
+        path: 'newpassword',
+        element: <ChangerPassword />,
+      },
+    ]
   },
     {
       path: '/homeMembre',
@@ -42,6 +75,10 @@ const router = createBrowserRouter([
         { 
             path: 'profile',
             element: <Profile />,
+          },
+          { 
+            path: 'clubSuivi',
+            element: <ClubSuivi />,
           },
           { 
             path: 'newpassword',
@@ -77,13 +114,41 @@ const router = createBrowserRouter([
             element: <Ressources />,
           },
           {
+            
+             
+            path: 'guide',
+            element: <GuideMembre />,
+          },
+          {
+            path: 'reglement',
+            element: <ReglementMembre />,
+          },
+          {
+            path: 'multimedia',
+            element: <MultimediaMembre />,
+          },
+          {
+            path: 'tutoriel',
+            element: <TutorielMembre />,
+          },
+          {
              
             path: 'join',
             element: <JoinNow />,
           },
           { 
-            path:'detailsClub',
+            path:'detailsClub/:id',
             element: <DetailsClubPage />,
+          },
+          {
+             
+            path:'paiement/event/:eventId/:membreId',
+            element: <StripePaiementPage />,
+          },
+          {
+             
+            path:'paiement/:clubId/:membreId',
+            element: <StripePaiementPageClub />,
           },
       ],
     },
@@ -118,6 +183,38 @@ const router = createBrowserRouter([
         {
           path: "event",
           element: <EventContainer />,
+        },
+        {
+          path: "membreSuivi",
+          element: <MembreSuivi />,
+        },
+        {
+          path: "membreBureau",
+          element: <MembreBureau />,
+        },
+        {
+          path: "MembreEvent/:eventId",
+          element: <ListMembreEvent />,
+        },
+        {
+          path: "ressource",
+          element: <ClubResources />,
+        },
+        {
+          path: "guide",
+          element: <Guide />,
+        },
+        {
+          path: "reglement",
+          element: <Reglement />,
+        },
+        {
+          path: "multimedia",
+          element: <Multimedia />,
+        },
+        {
+          path: "tutoriel",
+          element: <Tutoriel />,
         },
       ],
     },

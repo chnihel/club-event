@@ -114,7 +114,8 @@ const RegisterMembre : React.FC =() => {
           formData.append("role", "membre");
           formData.append("adresse", adresse);
           formData.append("origine", origine ?? '');
-          formData.append("faculté", faculte ?? '');
+          formData.append("faculte", faculte ?? '');
+          formData.append("sexe", sexe ?? '');
           if (data.image) {
             formData.append("image", data.image);
           }

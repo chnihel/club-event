@@ -1,52 +1,55 @@
 // src/pages/DetailsClubPage.tsx
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import ClubDetails from '../component/pageClub';
+import { useParams } from 'react-router-dom';
+import api from '../service/api';
 
+interface MembreBureau{
+  nom:string;
+  role:string;
+  image:File
+}
+interface Club {
+  _id?: string;
+  nomClub: string;
+  description: string;
+  derigeantClub?: string;
+  logo?: string | File | null;
+  activitePrincipale?: string
+  mission?: string
+  vision?: string
+  objectifs?: string
+  membresBureau?:MembreBureau[]
+}
 const DetailsClubPage = () => {
-  // ici tu peux appeler une API plus tard ou utiliser un state global
-  const data = {
-    name: "Club IT & Innovation",
-    mission: "Favoriser l'innovation technologique chez les étudiants.",
-    vision: "Devenir un pôle de créativité reconnu à l’échelle nationale.",
-    objectives: [
-      "Encourager les projets open-source",
-      "Organiser des hackathons",
-      "Sensibiliser à la cybersécurité",
-    ],
-    activities: [
-      "Ateliers mensuels",
-      "Conférences avec des experts",
-      "Compétitions annuelles",
-    ],
-    leaders: [
-      {
-        name: "Sami Ben Ali",
-        role: "Président",
-        email: "sami@club.tn",
-        phone: "55 123 456",
-      },
-      {
-        name: "Noura Toumi",
-        role: "Vice-présidente",
-        email: "noura@club.tn",
-        phone: "55 654 321",
-      },
-      {
-        name: "Sami Ben Ali",
-        role: "Président",
-        email: "sami@club.tn",
-        phone: "55 123 456",
-      },
-      {
-        name: "Sami Ben Ali",
-        role: "Président",
-        email: "sami@club.tn",
-        phone: "55 123 456",
-      },
-    ]
-  };
+  const {id}=useParams()
+  const [detailsClub,setDetailsClub]=useState<Club |null>(null) 
+  const getDetailsClub=async()=>{
+    try {
+      const response=await api.getClub(id)
+      console.log('les details de club',response.data)
+setDetailsClub(response.data.getclub)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  useEffect(()=>{
+    getDetailsClub()
+  },[id])
+  if (!detailsClub) return <div>Chargement...</div>;
 
-  return <ClubDetails {...data} />;
+  return (
+    <ClubDetails
+      nomClub={detailsClub.nomClub}
+      description={detailsClub.description}
+      logo={detailsClub.logo}  
+      mission={detailsClub.mission || ""}
+      vision={detailsClub.vision || ""}
+      objectifs={detailsClub.objectifs || ""}
+      activitePrincipale={detailsClub.activitePrincipale || ""}
+      leaders={Array.isArray(detailsClub.membresBureau) ? detailsClub.membresBureau : []}
+    />
+  );
 };
 
 export default DetailsClubPage;

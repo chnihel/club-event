@@ -107,14 +107,14 @@ const RegisterDerigeant : React.FC =() => {
           formData.append("prenom", prenom);
           formData.append("telephone", telephone);
           formData.append("datenaissance", dateNaissance);
-          formData.append("genre", sexe);
+          formData.append("sexe", sexe);
           formData.append("email", email);
           formData.append("password", password);
          
           formData.append("role", "derigeant_club");
           formData.append("adresse", adresse);
           formData.append("origine", origine ?? '');
-          formData.append("faculté", faculte ?? '');
+          formData.append("faculte", faculte ?? '');
           if (data.image) {
             formData.append("image", data.image);
           }

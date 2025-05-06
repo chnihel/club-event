@@ -22,6 +22,7 @@ const Profile = () => {
     ? JSON.parse(localStorage.getItem('userClub') as string)
     : null;
   const userId = localStorageData ? localStorageData.user?._id : null;
+  const roleUser=localStorageData ? localStorageData.user?.role:null
 
   const getInformation = async () => {
     try {
@@ -62,14 +63,36 @@ const Profile = () => {
       formData.append("email", edit.email);
       formData.append("adresse", edit.adresse ?? '');
       formData.append("origine", edit.origine ?? '');
-      formData.append("faculté", edit.faculte ?? '');
+      formData.append("faculte", edit.faculte ?? '');
       if (edit.image instanceof File) {
         formData.append("image", edit.image);
       }
       
-      const response = await api.updateDerigeant(userId, formData);
-      console.log('user update', response.data);
-      localStorage.setItem('userClub', JSON.stringify(response.data));
+      let response;
+
+    // Choix de la fonction selon le rôle
+    switch (roleUser) {
+      case "derigeant_club":
+        response = await api.updateDerigeant(userId, formData);
+        break;
+      case "membre":
+        response = await api.updateMembre(userId, formData);
+        break;
+      case "super_admin":
+        response = await api.updateSuperAdmin(userId, formData);
+        break;
+      default:
+        throw new Error("Rôle inconnu");
+    }
+
+    console.log('user update', response.data);
+    const existingData = JSON.parse(localStorage.getItem('userClub') || '{}');
+    const updatedData = {
+      ...existingData,
+      user: response.data.data, // Met à jour seulement les infos utilisateur
+    };
+    localStorage.setItem('userClub', JSON.stringify(updatedData));
+
     } catch (error) {
       console.log(error);
     }

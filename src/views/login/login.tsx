@@ -30,7 +30,10 @@ const Login: React.FC = () => {
         navigate('/homeMembre'); 
       } else if (roleUser === 'derigeant_club') {
         navigate('/homeDerigeant'); 
-      } else {
+      } else if (roleUser === 'super_admin') {
+        navigate('/homeAdmin'); 
+      } 
+      else {
         navigate('/'); 
       }
   

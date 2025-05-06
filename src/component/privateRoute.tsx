@@ -29,6 +29,9 @@ const PrivateRoute: React.FC<PrivateRouteProps> = ({ children }) => {
   if (roleUser === 'derigeant_club' && !location.pathname.startsWith('/homeDerigeant')) {
     return <Navigate to="/homeDerigeant" replace />;
   }
+  if (roleUser === 'super_admin' && !location.pathname.startsWith('/homeAdmin')) {
+    return <Navigate to="/homeAdmin" replace />;
+  }
 
   // Si tout est bon, afficher les enfants
   return <>{children}</>;
