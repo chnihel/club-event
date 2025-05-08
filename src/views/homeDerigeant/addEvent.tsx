@@ -72,7 +72,7 @@ const AddEvent = ({ searchValue }: AddEventProps) => {
     getEventByClub();
   }, []);
 
-  const deleteEvent = async (id: any) => {
+  const deleteEventt = async (id: any) => {
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
@@ -165,7 +165,7 @@ const AddEvent = ({ searchValue }: AddEventProps) => {
                   <FaEditIcon />
                 </button>
                 <button
-                  onClick={() => deleteEvent(event)}
+                  onClick={() => deleteEventt(event._id)}
                   className="text-red-500 hover:text-red-700"
                   title="Delete Event"
                 >

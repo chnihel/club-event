@@ -111,9 +111,21 @@ const updateTutoriel=(id:any,data:any)=>{
     return axiosContext.put(`/tutoriel/${id}`,data)
 }
 
+const updateMembreStatus=(membreId:any,eventId:any)=>{
+    return axiosContext.put(`/membre/updatePaidStatus/${membreId}/${eventId}`)
+}
+const updateMembreStatusForClub=(membreId:any,clubId:any)=>{
+    return axiosContext.put(`/membre/updatePaidStatusForClub/${membreId}/${clubId}`)
+}
+
+const getMembre=(membreId:any)=>{
+    return axiosContext.get(`/membre/${membreId}`)
+}
+
 
 export default {getDerigeantByClub,createClub,getClub,updateDerigeant,
     changerMotDePasse,addEvent,listEvent,getAllClub,suiviClub,desuiviClub,
     deleteEvent,updateEvent,createMembreBureau,updateMembreBureau,updateClubStatus,supprimerClub,
     updateSuperAdmin,updateMembre,suiviEvent,getEvent,addGuide,addMultimedia,addReglement,addTutoriel,
-deleteGuide,updateGuide,deleteReglement,updateReglement,deleteMultimedia,updateMultimedia,updateTutoriel,deleteTutoriel}
+deleteGuide,updateGuide,deleteReglement,updateReglement,deleteMultimedia,updateMultimedia,updateTutoriel,deleteTutoriel,
+updateMembreStatus,updateMembreStatusForClub,getMembre}

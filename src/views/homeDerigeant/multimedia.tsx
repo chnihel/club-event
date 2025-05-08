@@ -5,6 +5,7 @@ import { FaEdit, FaTrash } from "react-icons/fa";
 import type { JSX } from "react";
 import Swal from "sweetalert2";
 import ImageCarousel from "../../component/carousel";
+import { useSendNotification } from "../../component/notifocation";
 
 
 
@@ -22,6 +23,8 @@ const FaTrashIcon = FaTrash as unknown as () => JSX.Element;
 const FaEditIcon = FaEdit as unknown as () => JSX.Element;
 const Multimedia = () => {
     const [multimedia, setMeltimedia] = useState<Ressource[]>([])
+        const { sendNotification } = useSendNotification();
+    
     const { clubId } = useParams()
     const getAllmultimediaRessource = async () => {
         try {
@@ -71,6 +74,10 @@ const Multimedia = () => {
 
             const response = await api.addMultimedia(formData);
             console.log('multimedia added by club manager:', response.data);
+            await sendNotification(
+                "📘 Nouveau multimedia ajouté !",
+                `Le club vient de publier un nouveau multimedia : ${newmultimedia.titre}`
+            );
             getAllmultimediaRessource();
             setShowModal(false);
         } catch (error) {

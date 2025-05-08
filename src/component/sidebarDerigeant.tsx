@@ -116,7 +116,7 @@ console.log('id de club', clubId);
           <li className="relative px-6 py-3">
             <Link
               className="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-              to="/homeMembre/inbox"
+              to={`/homeDerigeant/${clubId}/inbox`}
             >
               <svg
                 className="w-5 h-5"
@@ -161,7 +161,7 @@ console.log('id de club', clubId);
           <li className="relative px-6 py-3">
             <Link
               className="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-              to="/homeMembre/forum"
+              to={`/homeDerigeant/${clubId}/form`}
             >
               <svg
                 className="w-5 h-5"
@@ -181,7 +181,7 @@ console.log('id de club', clubId);
           <li className="relative px-6 py-3">
             <Link
               className="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-              to="/homeMembre/notif"
+              to={`/homeDerigeant/${clubId}/calendrier`}
             >
               <svg
                 className="w-5 h-5"
@@ -196,7 +196,7 @@ console.log('id de club', clubId);
                 <path d="M15 17h5l-1.405-1.405C18.21 14.79 18 14.4 18 14V11c0-3.07-1.63-5.64-4.5-6.32V4a1.5 1.5 0 00-3 0v.68C7.63 5.36 6 7.92 6 11v3c0 .4-.21.79-.595 1.195L4 17h5m1 0v1a3 3 0 006 0v-1m-6 0h6" />
               </svg>
 
-              <span className="ml-4">Notification</span>
+              <span className="ml-4">Calendrier</span>
             </Link>
           </li>
 

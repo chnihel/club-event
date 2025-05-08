@@ -15,6 +15,7 @@ interface Ressource {
 
 const ReglementMembre = () => {
   const [reglements, setreglement] = useState<Ressource[]>([]);
+
   const localStorageData = localStorage.getItem("userClub")
     ? JSON.parse(localStorage.getItem("userClub") as string)
     : null;

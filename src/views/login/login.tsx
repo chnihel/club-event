@@ -89,7 +89,7 @@ const Login: React.FC = () => {
                 </Link>
               </p>
               <p className="mt-1">
-                <Link className="text-sm font-medium text-purple-600 dark:text-purple-400 hover:underline" to="/login">
+                <Link className="text-sm font-medium text-purple-600 dark:text-purple-400 hover:underline" to="/registerMembre">
                   Create account
                 </Link>
               </p>

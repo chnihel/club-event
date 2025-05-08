@@ -13,7 +13,7 @@ interface Event {
   club?: string;
 }
 
-const Calendrier = () => {
+const CalendrierDergeneant = () => {
   const [event, setEvent] = useState<Event[]>([]);
   const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
@@ -25,17 +25,10 @@ const Calendrier = () => {
 
   const getEventByMembre = async () => {
     try {
-      const response = await api.getMembre(userId);
-      const allEvents = response.data.data.event;
-      const paidEvents = allEvents.filter((e: any) => e.isPaid === true);
-      const detailedEvents = await Promise.all(
-        paidEvents.map(async (e: any) => {
-          const response = await api.getEvent(e.eventId);
-          return response.data; // ou adapte selon ta structure
-        })
-      );
-      console.log(detailedEvents)
-      setEvent(detailedEvents.map((event: any) => event.getevenement)); // afficher seulement les events payés
+      const response = await api.getDerigeantByClub(userId);
+      const allEvents = response.data.data.evenement;
+      console.log("tout les event creer par derigeant",allEvents)
+      setEvent(allEvents); // afficher seulement les events payés
     } catch (error) {
       console.log(error);
     }
@@ -46,23 +39,21 @@ const Calendrier = () => {
   }, []);
 
   const handlePrevMonth = () => {
-    setCurrentMonth((prev) => {
-      if (prev === 0) {
-        setCurrentYear((y) => y - 1);
-        return 11;
-      }
-      return prev - 1;
-    });
+    if (currentMonth === 0) {
+      setCurrentMonth(11);
+      setCurrentYear((prev) => prev - 1);
+    } else {
+      setCurrentMonth((prev) => prev - 1);
+    }
   };
 
   const handleNextMonth = () => {
-    setCurrentMonth((prev) => {
-      if (prev === 11) {
-        setCurrentYear((y) => y + 1);
-        return 0;
-      }
-      return prev + 1;
-    });
+    if (currentMonth === 11) {
+      setCurrentMonth(0);
+      setCurrentYear((prev) => prev + 1);
+    } else {
+      setCurrentMonth((prev) => prev + 1);
+    }
   };
 
   const getDaysInMonth = (month: number, year: number) => {
@@ -147,4 +138,4 @@ const Calendrier = () => {
   );
 };
 
-export default Calendrier;
+export default CalendrierDergeneant;

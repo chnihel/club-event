@@ -5,6 +5,7 @@ import { FaEdit, FaTrash } from "react-icons/fa";
 import type { JSX } from "react";
 import Swal from "sweetalert2";
 import ImageCarousel from "../../component/carousel";
+import { useSendNotification } from "../../component/notifocation";
 
 
 
@@ -46,7 +47,8 @@ const Tutoriel = () => {
         duree:""
     });
     const [showModal, setShowModal] = useState(false);
-    
+    const { sendNotification } = useSendNotification();
+
     const handleVideoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) {
@@ -74,6 +76,10 @@ const Tutoriel = () => {
 
             const response = await api.addTutoriel(formData);
             console.log('tutoriel added by club manager:', response.data);
+            await sendNotification(
+                "📘 Nouveau tutoriel ajouté !",
+                `Le club vient de publier un nouveau tutoriel : ${newtutoriel.titre}`
+            );
             getAlltutorielRessource();
             setShowModal(false);
         } catch (error) {
@@ -151,7 +157,7 @@ const Tutoriel = () => {
            
             const response = await api.updateTutoriel(selectedtutoriel, formData)
             console.log('tutoriel updated:', response.data);
-
+            
             getAlltutorielRessource();
             setOpenModalEdit(false);
         } catch (error) {

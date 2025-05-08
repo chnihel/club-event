@@ -4,6 +4,7 @@ import api from "../../service/api";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import type { JSX } from "react";
 import Swal from "sweetalert2";
+import { useSendNotification } from "../../component/notifocation";
 
 
 
@@ -21,6 +22,8 @@ const FaTrashIcon = FaTrash as unknown as () => JSX.Element;
 const FaEditIcon = FaEdit as unknown as () => JSX.Element;
 const Reglement = () => {
     const [reglements, setreglement] = useState<Ressource[]>([])
+    const { sendNotification } = useSendNotification();
+
     const { clubId } = useParams()
     const getAllreglementRessource = async () => {
         try {
@@ -53,6 +56,10 @@ const Reglement = () => {
 
             const response = await api.addReglement(datareglement);
             console.log('reglement added by club manager:', response.data);
+            await sendNotification(
+                "📘 Nouveau guide ajouté !",
+                `Le club vient de publier un nouveau guide : ${datareglement.titre}`
+            );
             getAllreglementRessource();
             setShowModal(false);
         } catch (error) {

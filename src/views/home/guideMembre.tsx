@@ -47,7 +47,7 @@ const GuideMembre = () => {
 
     return (
         <div className="max-w-6xl mx-auto px-4 py-8">
-            <h1 className="text-4xl font-bold text-center text-purple-800 mb-10">
+            <h1 className="text-4xl font-bold text-center text-purple-800 mb-10 mt-5">
                 📘 Club Guides
             </h1>
 

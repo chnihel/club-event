@@ -27,7 +27,6 @@ interface Club {
 
 const Dashboard: React.FC = () => {
   const [event, setEvent] = useState<Event[]>([]);
-  const [selectedEvent,setSelectedEvent]=useState<Event | null>(null)
   const localStorageData = localStorage.getItem('userClub')
     ? JSON.parse(localStorage.getItem('userClub') as string)
     : null;

@@ -41,6 +41,12 @@ import ReglementMembre from "../views/home/reglementMembre";
 import MultimediaMembre from "../views/home/multimediaMembre";
 import TutorielMembre from "../views/home/tutorielMembre";
 import NotificationProvider from "../component/NotificationProvider";
+import ForumDerigeant from "../views/homeDerigeant/formDerigeant";
+import InboxDerigeant from "../views/homeDerigeant/inboxDerigeant";
+import CalendrierDergeneant from "../views/homeDerigeant/calendrier";
+import HomeVisiteur from "../views/homeVisiteur/homeVisiteur";
+import ListEvent from "../views/homeVisiteur/listEvent";
+import DetailsClubPageForVisiteur from "../views/homeVisiteur/detailsClub";
 
 const router = createBrowserRouter([
   {
@@ -65,6 +71,21 @@ const router = createBrowserRouter([
       },
     ]
   },
+
+  //route de visiteur
+  {
+    path: '/homevisiteur',
+    element:<HomeVisiteur /> ,
+    children:[
+      { 
+        index:true,
+        element: <ListEvent />,
+      },
+      { 
+        path:"detailsClub/:id",
+        element: <DetailsClubPageForVisiteur />,
+      },
+    ]},
     {
       path: '/homeMembre',
       element:<PrivateRoute> <NotificationProvider>
@@ -218,6 +239,18 @@ const router = createBrowserRouter([
         {
           path: "tutoriel",
           element: <Tutoriel />,
+        },
+        {
+          path: "form",
+          element: <ForumDerigeant />,
+        },
+        {
+          path: "inbox",
+          element: <InboxDerigeant />,
+        },
+        {
+          path: "calendrier",
+          element: <CalendrierDergeneant />,
         },
       ],
     },

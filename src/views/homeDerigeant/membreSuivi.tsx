@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import api from '../../service/api';
 import { useNavigate, useParams } from 'react-router-dom';
 interface Membres {
-    id?: string;
+    _id?: string;
     nom: string;
     prenom: string;
     email: string;
@@ -24,10 +24,6 @@ interface Membres {
   }
 const MembreSuivi = () => {
     const [membres, setMembres] = useState<Membres[]>([]);
-    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  
-    const navigate = useNavigate();
-  
    const {clubId}=useParams()
    const getIsPaidForClub = (membre: Membres): boolean => {
     const paidClub = membre.club?.find((c) => c.clubId === clubId);
@@ -49,6 +45,21 @@ const MembreSuivi = () => {
       useEffect(() => {
         getMembresByClub();
       }, []);
+
+      //updateStatus membre for club(isPaid
+       const updateStatusPaidForClub=async(membreId:string)=>{
+              console.log('membreId envoyé:', membreId); 
+      
+              try {
+                  const res=await api.updateMembreStatusForClub(membreId,clubId)
+                  console.log('status paid updated',res)
+                  getMembresByClub(); 
+      
+              } catch (error) {
+                  console.log(error)
+              }
+          }
+      
   return (
    <div className='min-h-screen bg-gradient-to-r from-blue-50 to-blue-100 p-6'>
   <h4 className="mb-4 text-lg font-semibold text-gray-600 dark:text-gray-300 mt-5">
@@ -69,6 +80,8 @@ const MembreSuivi = () => {
                                 <th className="text-center py-3">Origin</th>
                                 <th className="text-center py-3">Faculty</th>
                                 <th className="text-center py-3">Status</th>
+                                <th className="text-center py-3">updateStatus</th>
+
                             </tr>
                         </thead>
         <tbody className="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
@@ -122,6 +135,9 @@ const MembreSuivi = () => {
   {getIsPaidForClub(item) ? 'Paid' : 'Not Paid'}
 </span>
 </td>
+<td className="px-4 py-3 text-sm">
+                     <button onClick={()=>updateStatusPaidForClub(item._id!)}>update</button>
+                    </td>
                   </tr>
                 )
             })}

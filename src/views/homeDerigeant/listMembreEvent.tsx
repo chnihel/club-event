@@ -3,7 +3,7 @@ import api from '../../service/api';
 import { useNavigate, useParams } from 'react-router-dom';
 
 interface Membres {
-    id?: string;
+    _id?: string;
     nom: string;
     prenom: string;
     email: string;
@@ -30,12 +30,12 @@ const ListMembreEvent = () => {
 
     const [membresPayants, setMembresPayants] = useState<Membres[]>([]);
     const { eventId } = useParams()
-
+   
     const getMembresByEvent = async () => {
         try {
             const response = await api.getEvent(eventId);
             const membres = response.data.getevenement.membres;
-    
+            console.log('membres',membres)
             const membresAvecStatus = membres.map((m: any) => {
                 const eventInfo = m.event?.find((e: any) => e.eventId === eventId);
                 return {
@@ -43,12 +43,25 @@ const ListMembreEvent = () => {
                     isPaid: eventInfo?.isPaid || false
                 };
             });
-    
+             console.log('membre pour ce event avec son status',membresAvecStatus)
             setMembresPayants(membresAvecStatus);
         } catch (error) {
             console.error(error);
         }
     };
+
+    const updateStatusPaid=async(membreId:string)=>{
+        console.log('membreId envoyé:', membreId); 
+
+        try {
+            const res=await api.updateMembreStatus(membreId,eventId)
+            console.log('status paid updated',res)
+            getMembresByEvent(); 
+
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
 
     useEffect(() => {
@@ -74,6 +87,7 @@ const ListMembreEvent = () => {
                                 <th className="text-center py-3">Origin</th>
                                 <th className="text-center py-3">Faculty</th>
                                 <th className="text-center py-3">Status</th>
+                                <th className="text-center py-3">updateStatus</th>
                             </tr>
                         </thead>
                         <tbody className="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
@@ -111,6 +125,8 @@ const ListMembreEvent = () => {
         </span>
     )}
 </td>
+<td className="px-4 py-3 text-sm text-center"><button onClick={()=>updateStatusPaid(membre._id!)}>update Status</button></td>
+
                                 </tr>
                             ))}
                             {membresPayants.length === 0 && (

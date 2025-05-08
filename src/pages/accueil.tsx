@@ -57,7 +57,7 @@ export default function HomePage() {
         <p className="max-w-2xl pb-5 text-white mb-6">
         Built by students, for students — our platform helps you learn, lead, and launch. From planning iconic events to developing real-world skills, we’re shaping the next generation of changemakers.
         </p>
-        <Link to="/register">
+        <Link to="/homevisiteur">
           <button className="bg-blue-600 mb-5 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-full transition">
           Join the Movement
           </button>
