@@ -47,6 +47,7 @@ import CalendrierDergeneant from "../views/homeDerigeant/calendrier";
 import HomeVisiteur from "../views/homeVisiteur/homeVisiteur";
 import ListEvent from "../views/homeVisiteur/listEvent";
 import DetailsClubPageForVisiteur from "../views/homeVisiteur/detailsClub";
+import Gallerie from "../views/homeVisiteur/gallerie";
 
 const router = createBrowserRouter([
   {
@@ -84,6 +85,10 @@ const router = createBrowserRouter([
       { 
         path:"detailsClub/:id",
         element: <DetailsClubPageForVisiteur />,
+      },
+      { 
+        path:"gallerie/:id",
+        element: <Gallerie />,
       },
     ]},
     {
@@ -124,7 +129,7 @@ const router = createBrowserRouter([
           },
           {
              
-            path: 'forum',
+            path: 'forum/:id',
             element: <Forum />,
           },
           {

@@ -122,10 +122,15 @@ const getMembre=(membreId:any)=>{
     return axiosContext.get(`/membre/${membreId}`)
 }
 
+const getMessagesByClub= (clubId: string) =>{
+     return axiosContext.get(`/message/club/${clubId}`)
+
+}
+
 
 export default {getDerigeantByClub,createClub,getClub,updateDerigeant,
     changerMotDePasse,addEvent,listEvent,getAllClub,suiviClub,desuiviClub,
     deleteEvent,updateEvent,createMembreBureau,updateMembreBureau,updateClubStatus,supprimerClub,
     updateSuperAdmin,updateMembre,suiviEvent,getEvent,addGuide,addMultimedia,addReglement,addTutoriel,
 deleteGuide,updateGuide,deleteReglement,updateReglement,deleteMultimedia,updateMultimedia,updateTutoriel,deleteTutoriel,
-updateMembreStatus,updateMembreStatusForClub,getMembre}
+updateMembreStatus,updateMembreStatusForClub,getMembre,getMessagesByClub}

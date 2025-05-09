@@ -1,5 +1,6 @@
 import { useState } from "react";
-
+import Lightbox from "yet-another-react-lightbox";
+import "yet-another-react-lightbox/styles.css";
 interface ItemType {
   titre: string;
   format?: string[] | undefined;
@@ -11,7 +12,12 @@ interface Props {
 
 function ImageCarousel({ item }: Props) {
     const [currentIndex, setCurrentIndex] = useState(0);
-  
+    const [isOpen, setIsOpen] = useState(false);
+    if (!item.format || item.format.length === 0) return null;
+
+    const images = item.format.map((img) => ({
+      src: `http://localhost:5000/file/${img}`,
+    }));
     const handlePrev = () => {
       setCurrentIndex((prev) =>
         prev === 0 ? (item.format?.length || 1) - 1 : prev - 1
@@ -25,14 +31,14 @@ function ImageCarousel({ item }: Props) {
     };
   
     // Check if format is defined and not empty
-    if (!item.format || item.format.length === 0) return null;
 
   return (
     <div className="relative w-full max-w-xl mx-auto">
     <img
       src={`http://localhost:5000/file/${item.format[currentIndex]}`}
       alt={`${item.titre} - ${currentIndex}`}
-      className="w-full h-64 object-cover rounded"
+      className="w-full h-64 object-cover rounded-lg cursor-pointer"
+      onClick={() => setIsOpen(true)}
     />
     <button
       onClick={handlePrev}
@@ -46,6 +52,12 @@ function ImageCarousel({ item }: Props) {
     >
       ▶
     </button>
+    <Lightbox
+        open={isOpen}
+        close={() => setIsOpen(false)}
+        index={currentIndex}
+        slides={images}
+      />
   </div>
   );
 }

@@ -1,12 +1,49 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import api from '../service/api';
 
 interface SidebarProps {
   isSideMenuOpen: boolean;
   dark: boolean;
 }
+interface Club {
+  _id?: string
+  nomClub: string
+  logo: File
+
+}
 
 const Sidebar = ({ isSideMenuOpen, dark }: SidebarProps) => {
+  const [clubs, setClubs] = useState<Club[]>([]);
+  const [isPagesMenuOpen, setIsPagesMenuOpen] = useState(false);
+
+  const togglePagesMenu = () => {
+    setIsPagesMenuOpen(!isPagesMenuOpen);
+  };
+
+  const localStorageData = localStorage.getItem('userClub')
+    ? JSON.parse(localStorage.getItem('userClub') as string)
+    : null;
+  const userId = localStorageData ? localStorageData.user?._id : null;
+  const getAllClubSuivi = async () => {
+    try {
+      const response = await api.getAllClub()
+      const allClubs = response.data.listeclub;
+
+      // Filtrer les clubs suivis par userId
+      const clubsSuivis = allClubs.filter((club: any) =>
+        club.membres?.includes(userId)
+      );
+
+      setClubs(clubsSuivis);
+      console.log('list of club suivi', clubsSuivis);
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  useEffect(() => {
+    getAllClubSuivi()
+  }, [])
   return (
     <aside className={`z-20 ${isSideMenuOpen ? 'block' : 'hidden'} w-64 overflow-y-auto bg-white dark:bg-gray-800 md:block flex-shrink-0`}>
       <div className="py-4 text-gray-500 dark:text-gray-400">
@@ -110,25 +147,58 @@ const Sidebar = ({ isSideMenuOpen, dark }: SidebarProps) => {
             </Link>
           </li>
           <li className="relative px-6 py-3">
-            <Link
-              className="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-              to="/homeMembre/forum"
+            <button
+              className="inline-flex items-center justify-between w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
+              onClick={togglePagesMenu}
+              aria-haspopup="true"
             >
+              <span className="inline-flex items-center">
+                <svg
+                  className="w-5 h-5"
+                  aria-hidden="true"
+                  fill="none"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2v10z" />
+                </svg>
+                <span className="ml-4">Forum</span>
+              </span>
               <svg
-                className="w-5 h-5"
+                className="w-4 h-4"
                 aria-hidden="true"
-                fill="none"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
+                fill="currentColor"
+                viewBox="0 0 20 20"
               >
-                <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2v10z" />
+                <path
+                  fillRule="evenodd"
+                  d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                  clipRule="evenodd"
+                />
               </svg>
-              <span className="ml-4">Forum</span>
-            </Link>
+            </button>
+
+            {isPagesMenuOpen && (
+              <ul
+                className="p-2 mt-2 space-y-2 overflow-hidden text-sm font-medium text-gray-500 rounded-md shadow-inner bg-gray-50 dark:text-gray-400 dark:bg-gray-900"
+                aria-label="submenu"
+              >
+                {clubs.map((item,index)=>(
+                  <li key={index} className="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
+                  <Link to={`/homeMembre/forum/${item._id}`}>{item.nomClub}</Link>
+                </li>
+                ))}
+                
+
+
+              </ul>
+            )}
           </li>
+
+
           <li className="relative px-6 py-3">
             <Link
               className="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"

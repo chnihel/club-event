@@ -91,9 +91,9 @@ interface Event {
       <div className="p-6">
         <h1 className="text-xl font-semibold mb-6">Accueil</h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {event.map((item, index) => {
-            return (
-              <div className="relative bg-white shadow-md rounded-xl overflow-hidden">
+          {event.map((item, index) => (
+       
+              <div key={index} className="relative bg-white shadow-md rounded-xl overflow-hidden">
               
                 {item.club && (
                   <div className="relative">
@@ -102,54 +102,59 @@ interface Event {
                     <button className="absolute top-0 right-5 bg-black text-white text-xs px-2 py-1 rounded-full"   onClick={handleFollow}>FOLLOW</button>
                   </div>
                 )}
+
   
-                <div className="p-4 space-y-2">
-                  <span className="bg-purple-100 text-purple-600 text-xs px-2 py-1 rounded-full">{item.lieuEvent}</span>
-  
-                  <span className="bg-purple-100 text-purple-600 text-xs px-2 py-1 rounded-full">{item.frais}</span>
-                  <h3 className="text-sm font-semibold">{item.nomEvent}</h3>
-                  <div className="flex items-center justify-between">
-                    {item.derigeantClub && (
-                      <div className="flex items-center gap-2">
-                        <img
-                          src={`http://localhost:5000/file/${item.derigeantClub.image}`}
-                          className="w-8 h-8 rounded-full"
-                          alt="Author"
-                        />
-                        <div>
-                          <p className="text-xs font-medium">{item.derigeantClub.nom}</p>
-                          <p className="text-xs text-gray-500">{item.derigeantClub.telephone}</p>
-                        </div>
-                      </div>
-                    )}
-  
-                    {item.club && (
-                      <Link to={`/homeVisiteur/detailsClub/${item.club._id}`}>
-                        <button className="bg-purple-600 text-white text-xs px-4 py-2 rounded-full font-bold hover:bg-blue-700 transition">
-                          📄 Details
-                        </button>
-                      </Link>
-                    )}
-                    {item.club && (
-                        <button className="bg-red-600 text-white text-xs px-4 py-2 rounded-full font-bold flex items-center gap-1 hover:bg-red-700 transition"
-                        onClick={handleJoin}>
-                          <span>&#10132;</span> JOIN NOW
-                        </button>
-                    )}
-  
-  
-  
-                  </div>
-  
-                </div>
+  <div className="p-4 space-y-3">
+          <div className="flex justify-between">
+            <span className="bg-purple-100 text-purple-600 text-xs px-2 py-1 rounded-full">{item.lieuEvent}</span>
+            <span className="bg-purple-100 text-purple-600 text-xs px-2 py-1 rounded-full">{item.frais} DT</span>
+          </div>
+
+          <h3 className="text-base font-semibold">{item.nomEvent}</h3>
+
+          {item.derigeantClub && (
+            <div className="flex items-center gap-3">
+              <img
+                src={`http://localhost:5000/file/${item.derigeantClub.image}`}
+                alt="Dirigeant"
+                className="w-10 h-10 rounded-full"
+              />
+              <div>
+                <p className="text-sm font-medium">{item.derigeantClub.nom}</p>
+                <p className="text-xs text-gray-500">{item.derigeantClub.telephone}</p>
               </div>
-            )
-          })}
-  
-  
+            </div>
+          )}
+
+          <div className="flex flex-wrap gap-2 mt-3">
+            {item.club && (
+             <div className="flex flex-col sm:flex-row flex-wrap gap-2 mt-3">
+             <Link to={`/homevisiteur/detailsClub/${item.club._id}`} className="w-full sm:w-auto">
+               <button className="w-full sm:w-auto bg-purple-600 text-white text-xs px-4 py-2 rounded-full hover:bg-indigo-700 transition">
+                 📄 Details
+               </button>
+             </Link>
+           
+             <Link to={`/homevisiteur/gallerie/${item.club._id}`} className="w-full sm:w-auto">
+               <button className="w-full sm:w-auto bg-teal-600 text-white text-xs px-4 py-2 rounded-full hover:bg-teal-700 transition">
+                 🖼️ Gallerie
+               </button>
+             </Link>
+           
+             <button
+               onClick={handleJoin}
+               className="w-full sm:w-auto bg-red-600 text-white text-xs px-4 py-2 rounded-full hover:bg-red-700 transition flex items-center justify-center"
+             >
+               <span className="mr-1">&#10132;</span> JOIN NOW
+             </button>
+           </div>
+            )}
+          </div>
         </div>
-  
       </div>
+    ))}
+  </div>
+</div>
   )
 }
 
