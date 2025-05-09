@@ -17,8 +17,13 @@ const Sidebar = ({ isSideMenuOpen, dark }: SidebarProps) => {
   const [clubs, setClubs] = useState<Club[]>([]);
   const [isPagesMenuOpen, setIsPagesMenuOpen] = useState(false);
 
+    const [isPagesMenuOpenInbox, setIsPagesMenuOpenInbox] = useState(false);
+
   const togglePagesMenu = () => {
     setIsPagesMenuOpen(!isPagesMenuOpen);
+  };
+  const togglePagesMenuInbox = () => {
+    setIsPagesMenuOpenInbox(!isPagesMenuOpenInbox);
   };
 
   const localStorageData = localStorage.getItem('userClub')
@@ -83,10 +88,13 @@ const Sidebar = ({ isSideMenuOpen, dark }: SidebarProps) => {
         </ul>
         <ul>
           <li className="relative px-6 py-3">
-            <Link
-              className="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-              to="/homeMembre/inbox"
+            <button
+              className="inline-flex items-center justify-between w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
+              onClick={togglePagesMenuInbox}
+              aria-haspopup="true"
             >
+            <span className="inline-flex items-center">
+
               <svg
                 className="w-5 h-5"
                 aria-hidden="true"
@@ -102,7 +110,35 @@ const Sidebar = ({ isSideMenuOpen, dark }: SidebarProps) => {
                 ></path>
               </svg>
               <span className="ml-4">Inbox</span>
-            </Link>
+              </span>
+                <svg
+                className="w-4 h-4"
+                aria-hidden="true"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                  clipRule="evenodd"
+                />
+              </svg>
+              </button>
+             {isPagesMenuOpenInbox && (
+              <ul
+                className="p-2 mt-2 space-y-2 overflow-hidden text-sm font-medium text-gray-500 rounded-md shadow-inner bg-gray-50 dark:text-gray-400 dark:bg-gray-900"
+                aria-label="submenu"
+              >
+                {clubs.map((item,index)=>(
+                  <li key={index} className="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
+                  <Link to={`/homeMembre/inbox/${item._id}`}>{item.nomClub}</Link>
+                </li>
+                ))}
+                
+
+
+              </ul>
+            )}
           </li>
           <li className="relative px-6 py-3">
             <Link

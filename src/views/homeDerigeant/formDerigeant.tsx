@@ -73,12 +73,13 @@ const ForumDerigeant = () => {
     }
   
     socketInstance.on("chatHistory", (history: any[]) => {
-      setMessages(history);
+  setMessages(history.filter(msg => msg.type === 'club'));
     });
   
     socketInstance.on("newMessage", (msg: any) => {
-      setMessages((prev) => [...prev, msg]);
-    });
+ if (msg.type === 'club') {
+    setMessages(prev => [...prev, msg]);
+  }    });
   
     return () => {
       socketInstance.disconnect();
@@ -189,7 +190,7 @@ const ForumDerigeant = () => {
        />
       )}
       <div className={`text-sm p-2 rounded-xl max-w-xs ${msg.sender === userId ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}>
-        {msg.content}
+        <strong>{msg.sender?.prenom}:</strong>{msg.content}
       </div>
     </div>
   ))}

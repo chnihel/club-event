@@ -119,7 +119,7 @@ const router = createBrowserRouter([
           },
           {
              
-            path: 'inbox',
+            path: 'inbox/:id',
             element: <Inbox />,
           },
           {
