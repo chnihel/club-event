@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import api from '../../service/api';
+import { useNavigate } from 'react-router-dom';
 
 
 interface Club {
@@ -14,6 +15,9 @@ interface Club {
     objectifs?: string
     status?: boolean;
     cotisation: number
+    datePaiement: string
+        isPaid?: boolean; 
+
 
 }
 interface Derigeant {
@@ -30,20 +34,51 @@ const ClubSuivi = () => {
     const userId = localStorageData ? localStorageData.user?._id : null;
     const getAllClubSuivi = async () => {
         try {
-            const response = await api.getAllClub()
-            const allClubs = response.data.listeclub;
+            await api.updateIsPaid();
 
-            // Filtrer les clubs suivis par userId
-            const clubsSuivis = allClubs.filter((club: any) =>
-                club.membres?.includes(userId)
-            );
+            const response = await api.getMembre(userId);
+            const membre = response.data;
 
-            setClubs(clubsSuivis);
-            console.log('list of club suivi', clubsSuivis);
+            console.log('Membre récupéré:', membre);
+
+            if (!Array.isArray(membre.data.club)) {
+                console.warn("membre.club n'est pas un tableau :", membre.data.club);
+            }
+
+            const clubsPayes = Array.isArray(membre.data.club)
+                ? membre.data.club
+                    .filter((club: any) => 
+                         club.clubId
+                    )
+                    .map((club: any) => {
+                        console.log('Club filtré', club.clubId);
+                        return {
+                            ...club.clubId,
+                            datePaiement: club.datePaiement,
+                              isPaid: club.isPaid,
+                        };
+                    })
+                : [];
+
+            console.log('Liste des clubIds payés:', clubsPayes);
+            setClubs(clubsPayes);
         } catch (error) {
-            console.log(error)
+            console.error('Erreur générale dans getAllClubSuivi:', error);
         }
+    };
+    const navigate=useNavigate()
+const suiviClub=async(clubId:any)=>{
+    try {
+      const response=await api.suiviClub(userId,clubId)
+      console.log('membre suivi un evenemt et passe a paiement',response)
+      navigate(`/homeMembre/paiement/${clubId}/${userId}`);
+    } catch (error) {
+      console.log(error)
     }
+  }
+
+
+
     useEffect(() => {
         getAllClubSuivi()
     }, [])
@@ -64,6 +99,7 @@ const ClubSuivi = () => {
                                 <th className="text-center py-3">Objectifs</th>
                                 <th className="text-center py-3">Mission</th>
                                 <th className="text-center py-3">Derigeant</th>
+                                <th className="text-center py-3">Date de paiement</th>
 
                             </tr>
                         </thead>
@@ -94,13 +130,34 @@ const ClubSuivi = () => {
                                         <td className="px-4 py-3 text-sm">
                                             {item.mission}
                                         </td>
-                                        {item.derigentClub &&(
-                                             <td className="px-4 py-3 text-sm">
-                                             {item.derigentClub.nom}-{item.derigentClub.telephone}
-                                         </td>
+                                        {item.derigentClub && (
+                                            <td className="px-4 py-3 text-sm">
+                                                {item.derigentClub.nom}-{item.derigentClub.telephone}
+                                            </td>
                                         )}
-                                       
 
+
+                                        <td className="px-4 py-3 text-sm text-center">
+                                            {new Date(item.datePaiement).toLocaleDateString("fr-FR")}
+                                        </td>
+
+                                        <td className="px-4 py-3 text-sm text-center">
+    {item.isPaid ? (
+        <span className="text-green-600 font-bold">✅ Payé</span>
+    ) : (
+        <span className="text-red-600 font-bold">❌ Expiré</span>
+    )}
+</td>
+<td className="px-4 py-3 text-sm text-center">
+    {!item.isPaid && (
+        <button
+            className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600"
+                      onClick={()=>suiviClub(item._id)}>
+        
+            Renouveler
+        </button>
+    )}
+</td>
 
 
                                     </tr>
@@ -112,66 +169,7 @@ const ClubSuivi = () => {
                         </tbody>
                     </table>
                 </div>
-                <div className="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 uppercase border-t dark:border-gray-700 bg-gray-50 sm:grid-cols-9 dark:text-gray-400 dark:bg-gray-800">
-                    <span className="flex items-center col-span-3">
-                        Showing 21-30 of 100
-                    </span>
-                    <span className="col-span-2" />
-                    {/* Pagination */}
-                    <span className="flex col-span-4 mt-2 sm:mt-auto sm:justify-end">
-                        <nav aria-label="Table navigation">
-                            <ul className="inline-flex items-center">
-                                <li>
-                                    <button className="px-3 py-1 rounded-md rounded-l-lg focus:outline-none focus:shadow-outline-purple" aria-label="Previous">
-                                        <svg aria-hidden="true" className="w-4 h-4 fill-current" viewBox="0 0 20 20">
-                                            <path d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clipRule="evenodd" fillRule="evenodd" />
-                                        </svg>
-                                    </button>
-                                </li>
-                                <li>
-                                    <button className="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple">
-                                        1
-                                    </button>
-                                </li>
-                                <li>
-                                    <button className="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple">
-                                        2
-                                    </button>
-                                </li>
-                                <li>
-                                    <button className="px-3 py-1 text-white transition-colors duration-150 bg-purple-600 border border-r-0 border-purple-600 rounded-md focus:outline-none focus:shadow-outline-purple">
-                                        3
-                                    </button>
-                                </li>
-                                <li>
-                                    <button className="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple">
-                                        4
-                                    </button>
-                                </li>
-                                <li>
-                                    <span className="px-3 py-1">...</span>
-                                </li>
-                                <li>
-                                    <button className="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple">
-                                        8
-                                    </button>
-                                </li>
-                                <li>
-                                    <button className="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple">
-                                        9
-                                    </button>
-                                </li>
-                                <li>
-                                    <button className="px-3 py-1 rounded-md rounded-r-lg focus:outline-none focus:shadow-outline-purple" aria-label="Next">
-                                        <svg className="w-4 h-4 fill-current" aria-hidden="true" viewBox="0 0 20 20">
-                                            <path d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" fillRule="evenodd" />
-                                        </svg>
-                                    </button>
-                                </li>
-                            </ul>
-                        </nav>
-                    </span>
-                </div>
+
             </div>
         </div>
     )

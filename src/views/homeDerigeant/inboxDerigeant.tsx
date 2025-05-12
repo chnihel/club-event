@@ -47,10 +47,8 @@ const InboxDerigeant = () => {
     const [message, setMessage] = useState("");
     const [messages, setMessages] = useState<any[]>([]);
     const [socket, setSocket] = useState<Socket | null>(null);
-    // const [chatHistory, setChatHistory] = useState([]);
     const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
 
-    // const socket = useSocket("http://localhost:5000");
     useEffect(() => {
         const socketInstance = io("http://localhost:5000", {
             transports: ["websocket"],
@@ -113,7 +111,7 @@ const InboxDerigeant = () => {
 
         socket.emit("sendPrivateMessage", {
             sender: userId,
-            recepientId: selectedUserId, // 👈 nouvelle ligne
+            recepientId: selectedUserId, 
             content: message,
         });
 

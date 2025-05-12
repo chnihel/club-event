@@ -48,7 +48,13 @@ const Tutoriel = () => {
     });
     const [showModal, setShowModal] = useState(false);
     const { sendNotification } = useSendNotification();
+      const [commentaires, setCommentaires] = useState<{ [key: string]: any[] }>({});
+      const [showComments, setShowComments] = useState<{ [key: string]: boolean }>({});
+  const localStorageData = localStorage.getItem('userClub')
+        ? JSON.parse(localStorage.getItem('userClub') as string)
+        : null;
 
+    const userId = localStorageData?.user?._id;
     const handleVideoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) {
@@ -164,6 +170,25 @@ const Tutoriel = () => {
             console.log(error)
         }
     }
+
+
+     //get commenraire depuis tutoriel
+          const getCommentTutoriel = async (tutorielId: string) => {
+            try {
+              const response = await api.gettutorielById(tutorielId);
+              const commentairesDuMedia = response.data.gettutoriel.commentaire|| [];
+              console.log('comment', response.data.gettutoriel)
+              setCommentaires(prev => ({
+                ...prev,
+                [tutorielId]: commentairesDuMedia,
+              }));
+        
+              console.log("Commentaires pour", tutorielId, commentairesDuMedia);
+            } catch (error) {
+              console.error("Erreur de récupération des commentaires :", error);
+            }
+          };
+       
     return (
         <div className="max-w-6xl mx-auto px-4 py-8">
             <div className="flex justify-between items-center mb-8">
@@ -207,6 +232,38 @@ const Tutoriel = () => {
                                     </button>
                                 </div>
                             </div>
+
+
+                               {/* Bouton Afficher les commentaires */}
+              <div className="flex justify-end px-4 mb-2">
+                <button
+                  className="text-purple-600 hover:underline text-sm"
+                  onClick={() => {
+                    setShowComments(prev => ({
+                      ...prev,
+                      [item._id || ""]: !prev[item._id || ""],
+                    }));
+                    if (!commentaires[item._id || ""]) {
+                      getCommentTutoriel(item._id || "");
+                    }
+                  }}
+                >
+                  💬 Voir les commentaires
+                </button>
+              </div>
+
+              {/* Zone de commentaires */}
+              {showComments[item._id || ""] && (
+                <div className="px-4 pb-4 space-y-2">
+                  {(commentaires[item._id || ""] || []).map((c, idx) => (
+                    <div key={idx} className="text-sm bg-gray-100 p-2 rounded text-gray-700">
+                      {c.membre.nom} {c.membre.prenom}: {c.content}
+                    </div>
+                  ))}
+
+                
+                </div>
+              )}
                         </div>
                     ))
                 ) : (

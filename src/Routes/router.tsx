@@ -48,6 +48,7 @@ import HomeVisiteur from "../views/homeVisiteur/homeVisiteur";
 import ListEvent from "../views/homeVisiteur/listEvent";
 import DetailsClubPageForVisiteur from "../views/homeVisiteur/detailsClub";
 import Gallerie from "../views/homeVisiteur/gallerie";
+import Rapport from "../views/homeDerigeant/rapport";
 
 const router = createBrowserRouter([
   {
@@ -256,6 +257,10 @@ const router = createBrowserRouter([
         {
           path: "calendrier",
           element: <CalendrierDergeneant />,
+        },
+         {
+          path: "rapport",
+          element: <Rapport />,
         },
       ],
     },

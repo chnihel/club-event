@@ -46,6 +46,9 @@ const Multimedia = () => {
     });
     const [showModal, setShowModal] = useState(false);
     const [gal, setGal] = useState<File[]>([]);
+    const [commentaire, setCommentaire] = useState<{ [key: string]: string }>({});
+      const [commentaires, setCommentaires] = useState<{ [key: string]: any[] }>({});
+      const [showComments, setShowComments] = useState<{ [key: string]: boolean }>({});
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files) {
             setGal(Array.from(e.target.files));
@@ -160,6 +163,23 @@ const Multimedia = () => {
             console.log(error)
         }
     }
+
+     //get commenraire depuis multimedia
+      const getCommentMultimedia = async (mediaId: string) => {
+        try {
+          const response = await api.getMultimediaById(mediaId);
+          const commentairesDuMedia = response.data.getmutimedia.commentaire || [];
+          console.log('comment', response.data.getmutimedia)
+          setCommentaires(prev => ({
+            ...prev,
+            [mediaId]: commentairesDuMedia,
+          }));
+    
+          console.log("Commentaires pour", mediaId, commentairesDuMedia);
+        } catch (error) {
+          console.error("Erreur de récupération des commentaires :", error);
+        }
+      };
     return (
         <div className="max-w-6xl mx-auto px-4 py-8">
             <div className="flex justify-between items-center mb-8">
@@ -201,6 +221,46 @@ const Multimedia = () => {
                                     </button>
                                 </div>
                             </div>
+
+                              {/* Bouton Afficher les commentaires */}
+              <div className="flex justify-end px-4 mb-2">
+                <button
+                  className="text-purple-600 hover:underline text-sm"
+                  onClick={() => {
+                    setShowComments(prev => ({
+                      ...prev,
+                      [item._id || ""]: !prev[item._id || ""],
+                    }));
+                    if (!commentaires[item._id || ""]) {
+                      getCommentMultimedia(item._id || "");
+                    }
+                  }}
+                >
+                  💬 Voir les commentaires
+                </button>
+              </div>
+
+              {/* Zone de commentaires */}
+              {showComments[item._id || ""] && (
+                <div className="px-4 pb-4 space-y-2">
+                  {(commentaires[item._id || ""] || []).map((c, idx) => (
+                    <div key={idx} className="text-sm bg-gray-100 p-2 rounded text-gray-700">
+                      {c.membre.nom} {c.membre.prenom}: {c.content}
+                    </div>
+                  ))}
+
+                  <input
+                    type="text"
+                    placeholder="Ajouter un commentaire..."
+                    className="w-full mt-2 p-2 border rounded text-sm"
+                    value={commentaire[item._id || ""] || ""}
+                    onChange={(e) =>
+                      setCommentaire({ ...commentaire, [item._id || ""]: e.target.value })
+                    }
+                  />
+                
+                </div>
+              )}
                         </div>
                     ))
                 ) : (

@@ -126,6 +126,34 @@ const getMessagesByClub= (clubId: string) =>{
      return axiosContext.get(`/message/club/${clubId}`)
 
 }
+const getMultimediaById= (multimediaId: string) =>{
+     return axiosContext.get(`/mutimedia/${multimediaId}`)
+
+}
+const gettutorielById= (tutorielId: string) =>{
+     return axiosContext.get(`/tutoriel/${tutorielId}`)
+
+}
+const addComment= (data: any) =>{
+     return axiosContext.post('/commentaire',data)
+
+}
+
+const updateIsPaid=()=>{
+    return axiosContext.get('/paiement/testUpdatePaiement')
+}
+
+const addrapport= (data: any) =>{
+     return axiosContext.post('/rapport',data)
+
+}
+const updateRapport=(id:string,data:any)=>{
+    return axiosContext.put(`/rapport/${id}`,data)
+}
+const deleteRapport=(rapportId:string)=>{
+    return axiosContext.delete(`/rapport/${rapportId}`)
+}
+
 
 
 export default {getDerigeantByClub,createClub,getClub,updateDerigeant,
@@ -133,4 +161,5 @@ export default {getDerigeantByClub,createClub,getClub,updateDerigeant,
     deleteEvent,updateEvent,createMembreBureau,updateMembreBureau,updateClubStatus,supprimerClub,
     updateSuperAdmin,updateMembre,suiviEvent,getEvent,addGuide,addMultimedia,addReglement,addTutoriel,
 deleteGuide,updateGuide,deleteReglement,updateReglement,deleteMultimedia,updateMultimedia,updateTutoriel,deleteTutoriel,
-updateMembreStatus,updateMembreStatusForClub,getMembre,getMessagesByClub}
+updateMembreStatus,updateMembreStatusForClub,getMembre,getMessagesByClub,getMultimediaById,addComment,gettutorielById,
+updateIsPaid,addrapport,deleteRapport,updateRapport}
